@@ -2,7 +2,7 @@
 
 XC=BASIC extension for playing sound effects in Shoot'em Up Construction Kit ([S.E.U.C.K](https://www.c64-wiki.com/wiki/S.E.U.C.K.)) format. Compatible with XC=BASIC v2.2 or higher. [Click here to learn about XC=BASIC](https://xc-basic.net). 
 
-This is a conversion of [Martin Piper's routine(https://github.com/martinpiper/C64Public/tree/master/SFX)].
+This is a conversion of [Martin Piper's routine](https://github.com/martinpiper/C64Public/tree/master/SFX).
 
 Using this extension you'll be able to import and play sound effects from S.E.U.C.K. The sound effects can be played individually in the SID's three channels. You can also reserve one channel for your own sound effects.
 
