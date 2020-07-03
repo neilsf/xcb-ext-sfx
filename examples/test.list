@@ -1,0 +1,1048 @@
+------- FILE /tmp/xcbtmp_5FE1DC66.asm LEVEL 1 PASS 3
+      1 U0ea2					      PROCESSOR	6502
+      2 U0ea3 ????
+      3 U0ea3 ????				      INCDIR	"/home/neils/Workspace/xcb-ext-sfx/examples/."
+      4  0e9d ????				      SEG	UPSTART
+      5  0800					      ORG	$800
+      6  0800		       00		      HEX	00
+      7  0801		       0b 08		      DC.W	next_line
+      8  0803		       e2 07		      DC.W	2018
+      9  0805		       9e		      HEX	9e
+     10  0806					      IF	prg_start
+     11  0806		       32 37 38 32	      DC.B	[prg_start]d
+     12  080a					      ENDIF
+     13  080a		       00		      HEX	00
+     14  080b				   next_line
+     15  080b		       00 00		      HEX	00 00
+     16  080d							;------------	  --------
+ Memory information:
+     17  080d					      ECHO	"Memory information:"
+ ===================
+     18  080d					      ECHO	"==================="
+ BASIC loader: $800 - $80c
+     19  080d					      ECHO	"BASIC loader: $800 -", *-1
+     20  080d				   library_start
+     21  080d
+     22  080d					      PROCESSOR	6502
+   2473  0985					      LIST	ON
+   2474  0985
+   2475  0985
+   3004  0985					      LIST	ON
+   3005  0985
+   3313  0ade					      LIST	ON
+   3314  0ade
+   3315  0ade		       d0 12	   _VIC_RASTER EQU	$D012
+   3316  0ade		       d4 00	   _SFX_SID   EQU	$D400
+   3317  0ade		       d4 00	   _SFX_SIDVOICE1FREQLO EQU	$D400
+   3318  0ade		       d4 01	   _SFX_SIDVOICE1FREQHI EQU	$D401
+   3319  0ade		       d4 02	   _SFX_SIDVOICE1PULSEWIDTHLO EQU	$D402
+   3320  0ade		       d4 03	   _SFX_SIDVOICE1PULSEWIDTHHI EQU	$D403
+   3321  0ade		       d4 04	   _SFX_SIDVOICE1CONTROL EQU	$D404
+   3322  0ade		       d4 05	   _SFX_SIDVOICE1ATTACKDECAY EQU	$D405
+   3323  0ade		       d4 06	   _SFX_SIDVOICE1SUSTAINRELEASE EQU	$D406
+   3324  0ade		       d4 07	   _SFX_SIDVOICE2FREQLO EQU	$D407
+   3325  0ade		       d4 08	   _SFX_SIDVOICE2FREQHI EQU	$D408
+   3326  0ade		       d4 09	   _SFX_SIDVOICE2PULSEWIDTHLO EQU	$D409
+   3327  0ade		       d4 0a	   _SFX_SIDVOICE2PULSEWIDTHHI EQU	$D40A
+   3328  0ade		       d4 0b	   _SFX_SIDVOICE2CONTROL EQU	$D40B
+   3329  0ade		       d4 0c	   _SFX_SIDVOICE2ATTACKDECAY EQU	$D40C
+   3330  0ade		       d4 0d	   _SFX_SIDVOICE2SUSTAINRELEASE EQU	$D40D
+   3331  0ade		       d4 0e	   _SFX_SIDVOICE3FREQLO EQU	$D40E
+   3332  0ade		       d4 0f	   _SFX_SIDVOICE3FREQHI EQU	$D40F
+   3333  0ade		       d4 10	   _SFX_SIDVOICE3PULSEWIDTHLO EQU	$D410
+   3334  0ade		       d4 11	   _SFX_SIDVOICE3PULSEWIDTHHI EQU	$D411
+   3335  0ade		       d4 12	   _SFX_SIDVOICE3CONTROL EQU	$D412
+   3336  0ade		       d4 13	   _SFX_SIDVOICE3ATTACKDECAY EQU	$D413
+   3337  0ade		       d4 14	   _SFX_SIDVOICE3SUSTAINRELEASE EQU	$D414
+   3338  0ade		       d4 15	   _SFX_SIDFILTERCUTOFFFREQLO EQU	$D415
+   3339  0ade		       d4 16	   _SFX_SIDFILTERCUTOFFFREQHI EQU	$D416
+   3340  0ade		       d4 17	   _SFX_SIDFILTERCONTROL EQU	$D417
+   3341  0ade		       d4 18	   _SFX_SIDVOLUMEFILTER EQU	$D418
+   3342  0ade		       d4 1b	   _SFX_SIDVOICE3WAVEFORMOUTPUT EQU	$D41B
+   3343  0ade		       d4 1c	   _SFX_SIDVOICE3ADSROUTPUT EQU	$D41C
+   3344  0ade		       00 0d	   _SFX_VOICEWORKSIZE EQU	$D
+   3345  0ade
+ Library     : $80d - $add
+   3346  0ade					      ECHO	"Library     :",library_start,"-", *-1
+   3347  0ade				   prg_start
+   3348  0ade				   FPUSH      SET	0
+   3349  0ade				   FPULL      SET	0
+      0  0ade					      init_program
+      1  0ade		       ba		      tsx
+      2  0adf		       8e 85 09 	      stx	RESERVED_STACK_POINTER
+      0  0ae2					      seed_rnd
+      1  0ae2		       a5 a1		      lda	$a1
+      2  0ae4		       8d dc 0a 	      sta	random
+      3  0ae7		       a5 a2		      lda	$a2
+      4  0ae9		       8d dd 0a 	      sta	random+1
+      0  0aec					      basicout
+      1  0aec		       a5 01		      lda	$01
+      2  0aee		       29 fe		      and	#%11111110
+      3  0af0		       85 01		      sta	$01
+   3351  0af0				   FPUSH      SET	1
+      0  0af2					      pbyte	#0
+      1  0af2		       a9 00		      lda	#0
+      2  0af4				  -	      IF	!FPUSH
+      3  0af4				  -	      pha
+      4  0af4					      ENDIF
+   3353  0af4				   FPULL      SET	1
+   3354  0af4				   FPUSH      SET	0
+      0  0af4					      plb2var	_sound_no
+      1  0af4				  -	      IF	!FPULL
+      2  0af4				  -	      pla
+      3  0af4					      ENDIF
+      4  0af4		       8d a2 0e 	      sta	_sound_no
+   3356  0af4				   FPULL      SET	0
+   3357  0af4				   FPUSH      SET	1
+      0  0af7					      paddr	_Lsound_data
+      0  0af7					      pword	_Lsound_data
+      1  0af7				  -	      IF	!FPUSH
+      2  0af7				  -	      lda	#<_Lsound_data
+      3  0af7				  -	      pha
+      4  0af7				  -	      lda	#>_Lsound_data
+      5  0af7				  -	      pha
+      6  0af7					      ELSE
+      7  0af7		       a9 70		      lda	#<_Lsound_data
+      8  0af9		       a0 0b		      ldy	#>_Lsound_data
+      9  0afb					      ENDIF
+   3359  0afb				   FPULL      SET	1
+   3360  0afb				   FPUSH      SET	0
+      0  0afb					      plw2var	_sfx_init.addr
+      1  0afb				  -	      IF	!FPULL
+      2  0afb				  -	      pla
+      3  0afb				  -	      sta	_sfx_init.addr+1
+      4  0afb				  -	      pla
+      5  0afb				  -	      sta	_sfx_init.addr
+      6  0afb					      ELSE
+      7  0afb		       8d 9e 0e 	      sta	_sfx_init.addr
+      8  0afe		       8c 9f 0e 	      sty	_sfx_init.addr+1
+      9  0b01					      ENDIF
+   3362  0b01				   FPULL      SET	0
+   3363  0b01				   FPUSH      SET	1
+      0  0b01					      pbyte	#1
+      1  0b01		       a9 01		      lda	#1
+      2  0b03				  -	      IF	!FPUSH
+      3  0b03				  -	      pha
+      4  0b03					      ENDIF
+   3365  0b03				   FPULL      SET	1
+   3366  0b03				   FPUSH      SET	0
+      0  0b03					      plb2var	_sfx_init.reserve_voice3
+      1  0b03				  -	      IF	!FPULL
+      2  0b03				  -	      pla
+      3  0b03					      ENDIF
+      4  0b03		       8d a0 0e 	      sta	_sfx_init.reserve_voice3
+   3368  0b06		       20 6b 0c 	      jsr	_Psfx_init
+   3369  0b06				   FPULL      SET	0
+      0  0b09					      paddr	_S1
+      0  0b09					      pword	_S1
+      1  0b09					      IF	!FPUSH
+      2  0b09		       a9 83		      lda	#<_S1
+      3  0b0b		       48		      pha
+      4  0b0c		       a9 0e		      lda	#>_S1
+      5  0b0e		       48		      pha
+      6  0b0f				  -	      ELSE
+      7  0b0f				  -	      lda	#<_S1
+      8  0b0f				  -	      ldy	#>_S1
+      9  0b0f					      ENDIF
+      0  0b0f					      stdlib_putstr
+      1  0b0f		       68		      pla
+      2  0b10		       a8		      tay
+      3  0b11		       68		      pla
+      4  0b12		       20 8c 09 	      jsr	STDLIB_PRINT
+   3372  0b15		       a9 0d		      lda	#13
+   3373  0b17		       20 16 e7 	      jsr	KERNAL_PRINTCHR
+   3374  0b1a				   _Lloop
+   3375  0b1a				   FPUSH      SET	1
+      0  0b1a					      pbyte	#100
+      1  0b1a		       a9 64		      lda	#100
+      2  0b1c				  -	      IF	!FPUSH
+      3  0b1c				  -	      pha
+      4  0b1c					      ENDIF
+   3377  0b1c				   FPULL      SET	1
+   3378  0b1c				   FPUSH      SET	0
+      0  0b1c					      watchc	53266
+      1  0b1c				  -	      IF	!FPULL
+      2  0b1c				  -	      pla
+      3  0b1c					      ENDIF
+      4  0b1c				   .again
+      5  0b1c		       cd 12 d0 	      cmp	53266
+      6  0b1f		       d0 fb		      bne	.again
+   3380  0b21		       20 a3 0d 	      jsr	_Psfx_play
+   3381  0b21				   FPULL      SET	0
+      0  0b24					      inkeyw
+      0  0b24					      inkeyb
+      1  0b24		       20 e4 ff 	      jsr	KERNAL_GETIN
+      2  0b27					      IF	!FPUSH
+      3  0b27		       48		      pha
+      4  0b28					      ENDIF
+      2  0b28					      IF	!FPUSH
+      3  0b28		       a9 00		      lda	#0
+      4  0b2a		       48		      pha
+      5  0b2b				  -	      ELSE
+      6  0b2b				  -	      ldy	#0
+      7  0b2b					      ENDIF
+      0  0b2b					      pbyte	#0
+      1  0b2b		       a9 00		      lda	#0
+      2  0b2d					      IF	!FPUSH
+      3  0b2d		       48		      pha
+      4  0b2e					      ENDIF
+      0  0b2e					      btow
+      1  0b2e		       a9 00		      lda	#$00
+      2  0b30		       48		      pha
+   3385  0b30				   FPUSH      SET	1
+      0  0b31					      cmpwgt
+      1  0b31		       ba		      tsx
+      2  0b32		       bd 02 01 	      lda.wx	stack+2
+      3  0b35		       dd 04 01 	      cmp.wx	stack+4
+      4  0b38		       bd 01 01 	      lda.wx	stack+1
+      5  0b3b		       fd 03 01 	      sbc.wx	stack+3
+      6  0b3e		       30 0a		      bmi	.pht
+      7  0b40		       e8		      inx
+      8  0b41		       e8		      inx
+      9  0b42		       e8		      inx
+     10  0b43		       e8		      inx
+     11  0b44		       9a		      txs
+      0  0b45					      pzero
+      1  0b45		       a9 00		      lda	#$00
+      2  0b47				  -	      IF	!FPUSH
+      3  0b47				  -	      pha
+      4  0b47					      ENDIF
+     13  0b47				  -	      IF	!FPUSH
+     14  0b47				  -	      jmp	*+11
+     15  0b47					      ELSE
+     16  0b47		       4c 51 0b 	      jmp	*+10
+     17  0b4a					      ENDIF
+     18  0b4a		       e8	   .pht       inx
+     19  0b4b		       e8		      inx
+     20  0b4c		       e8		      inx
+     21  0b4d		       e8		      inx
+     22  0b4e		       9a		      txs
+      0  0b4f					      pone
+      1  0b4f		       a9 01		      lda	#$01
+      2  0b51				  -	      IF	!FPUSH
+      3  0b51				  -	      pha
+      4  0b51					      ENDIF
+   3387  0b51				   FPULL      SET	1
+   3388  0b51				   FPUSH      SET	0
+      0  0b51					      cond_stmt	_EI_1, _EL_1
+      1  0b51				  -	      IF	!FPULL
+      2  0b51				  -	      pla
+      3  0b51					      ENDIF
+      4  0b51		       d0 03		      bne	*+5
+      5  0b53				  -	      IFCONST	_EL_1
+      6  0b53				  -	      jmp	_EL_1
+      7  0b53					      ELSE
+      8  0b53		       4c 62 0b 	      jmp	_EI_1
+      9  0b56					      ENDIF
+   3390  0b56				   FPULL      SET	0
+   3391  0b56				   FPUSH      SET	1
+      0  0b56					      pbvar	_sound_no
+      0  0b56					      pbyte	_sound_no
+      1  0b56		       ad a2 0e 	      lda	_sound_no
+      2  0b59				  -	      IF	!FPUSH
+      3  0b59				  -	      pha
+      4  0b59					      ENDIF
+   3393  0b59				   FPULL      SET	1
+   3394  0b59				   FPUSH      SET	0
+      0  0b59					      plb2var	_sfx_start.effect_no
+      1  0b59				  -	      IF	!FPULL
+      2  0b59				  -	      pla
+      3  0b59					      ENDIF
+      4  0b59		       8d a1 0e 	      sta	_sfx_start.effect_no
+   3396  0b5c		       20 ff 0c 	      jsr	_Psfx_start
+      0  0b5f					      incb	_sound_no
+      1  0b5f		       ee a2 0e 	      inc	_sound_no
+   3398  0b62				   _EI_1
+   3399  0b62		       4c 1a 0b 	      jmp	_Lloop
+      0  0b65					      halt
+      0  0b65					      basicin
+      1  0b65		       a5 01		      lda	$01
+      2  0b67		       09 01		      ora	#%00000001
+      3  0b69		       85 01		      sta	$01
+      2  0b6b		       ae 85 09 	      ldx	RESERVED_STACK_POINTER
+      3  0b6e		       9a		      txs
+      4  0b6f		       60		      rts
+   3401  0b70
+   3402  0b70				   _Lsound_data
+   3403  0b70
+   3404  0b70				   _IJS1      INCBIN	"outlaw.sfx"
+   3405  0c60
+   3406  0c60				   _IJ1
+   3407  0c60
+ Included file (outlaw.sfx): $b70 - $c60
+   3408  0c60					      ECHO	"Included file (outlaw.sfx):",_IJS1,"-", _IJ1
+   3409  0c60
+   3410  0c60				   prg_end
+      0  0c60					      halt
+      0  0c60					      basicin
+      1  0c60		       a5 01		      lda	$01
+      2  0c62		       09 01		      ora	#%00000001
+      3  0c64		       85 01		      sta	$01
+      2  0c66		       ae 85 09 	      ldx	RESERVED_STACK_POINTER
+      3  0c69		       9a		      txs
+      4  0c6a		       60		      rts
+   3412  0c6b
+   3413  0c6b				   _Psfx_init SUBROUTINE
+   3414  0c6b
+   3415  0c6b							; Inline ASM start
+   3416  0c6b
+   3417  0c6b
+   3418  0c6b
+   3419  0c6b		       ad 9e 0e 	      lda	_sfx_init.addr
+   3420  0c6e
+   3421  0c6e		       8d 5e 0d 	      sta	sfx_table_inst + 1
+   3422  0c71
+   3423  0c71		       ad 9f 0e 	      lda	_sfx_init.addr + 1
+   3424  0c74
+   3425  0c74		       8d 5f 0d 	      sta	sfx_table_inst + 2
+   3426  0c77
+   3427  0c77		       ad a0 0e 	      lda	_sfx_init.reserve_voice3
+   3428  0c7a
+   3429  0c7a		       8d c7 0c 	      sta	SFX_LimitVoice3
+   3430  0c7d
+   3431  0c7d
+   3432  0c7d
+   3433  0c7d		       4c c8 0c 	      jmp	.init
+   3434  0c80
+   3435  0c80							; Variables
+   3436  0c80
+   3437  0c80
+   3438  0c80
+   3439  0c80		       00	   SFX_CurrentVoice DC.B	0
+   3440  0c81
+   3441  0c81							; Define the first voice
+   3442  0c81
+   3443  0c81		       00	   SFX_VoiceControl DC.B	0
+   3444  0c82
+   3445  0c82		       00	   SFX_VoiceAttackDecay DC.B	0
+   3446  0c83
+   3447  0c83		       00	   SFX_VoiceFreqLo DC.B	0
+   3448  0c84
+   3449  0c84		       00	   SFX_VoiceFreqHi DC.B	0
+   3450  0c85
+   3451  0c85		       00	   SFX_VoiceFreqLoSpeed DC.B	0
+   3452  0c86
+   3453  0c86		       00	   SFX_VoiceFreqHiSpeed2 DC.B	0
+   3454  0c87
+   3455  0c87		       00	   SFX_VoiceFreqDecay DC.B	0
+   3456  0c88
+   3457  0c88		       00	   SFX_VoiceFreqLoSpeed2 DC.B	0
+   3458  0c89
+   3459  0c89		       00	   SFX_VoiceFreqHiSpeed DC.B	0
+   3460  0c8a
+   3461  0c8a		       00	   SFX_VoiceFreqHiCountInit DC.B	0
+   3462  0c8b
+   3463  0c8b		       00	   SFX_VoiceFreqDirection DC.B	0
+   3464  0c8c
+   3465  0c8c		       00	   SFX_VoiceFreqHiCount DC.B	0
+   3466  0c8d
+   3467  0c8d		       00	   SFX_VoiceTotalCount DC.B	0
+   3468  0c8e
+   3469  0c8e							; Use filled space for the other two voices
+   3470  0c8e
+   3471  0c8e		       00 00 00 00*SFX_Voice23 DS.B	26
+   3472  0ca8
+   3473  0ca8		       00	   SFX_TempVar DC.B	0
+   3474  0ca9
+   3475  0ca9		       00 07 0e    SFX_MulBy7Tab HEX	00 07 0E
+   3476  0cac
+   3477  0cac				   SFX_tmp    SET	0
+   3478  0cac
+   3479  0cac				   SFX_MulBy10Tab REPEAT	24
+   3480  0cac
+   3481  0cac		       00		      DC.B	SFX_tmp
+   3482  0cad
+   3483  0cad				   SFX_tmp    SET	SFX_tmp + 10
+   3484  0cad
+   3479  0cad					      REPEND
+   3480  0cad
+   3481  0cad		       0a		      DC.B	SFX_tmp
+   3482  0cae
+   3483  0cae				   SFX_tmp    SET	SFX_tmp + 10
+   3484  0cae
+   3479  0cae					      REPEND
+   3480  0cae
+   3481  0cae		       14		      DC.B	SFX_tmp
+   3482  0caf
+   3483  0caf				   SFX_tmp    SET	SFX_tmp + 10
+   3484  0caf
+   3479  0caf					      REPEND
+   3480  0caf
+   3481  0caf		       1e		      DC.B	SFX_tmp
+   3482  0cb0
+   3483  0cb0				   SFX_tmp    SET	SFX_tmp + 10
+   3484  0cb0
+   3479  0cb0					      REPEND
+   3480  0cb0
+   3481  0cb0		       28		      DC.B	SFX_tmp
+   3482  0cb1
+   3483  0cb1				   SFX_tmp    SET	SFX_tmp + 10
+   3484  0cb1
+   3479  0cb1					      REPEND
+   3480  0cb1
+   3481  0cb1		       32		      DC.B	SFX_tmp
+   3482  0cb2
+   3483  0cb2				   SFX_tmp    SET	SFX_tmp + 10
+   3484  0cb2
+   3479  0cb2					      REPEND
+   3480  0cb2
+   3481  0cb2		       3c		      DC.B	SFX_tmp
+   3482  0cb3
+   3483  0cb3				   SFX_tmp    SET	SFX_tmp + 10
+   3484  0cb3
+   3479  0cb3					      REPEND
+   3480  0cb3
+   3481  0cb3		       46		      DC.B	SFX_tmp
+   3482  0cb4
+   3483  0cb4				   SFX_tmp    SET	SFX_tmp + 10
+   3484  0cb4
+   3479  0cb4					      REPEND
+   3480  0cb4
+   3481  0cb4		       50		      DC.B	SFX_tmp
+   3482  0cb5
+   3483  0cb5				   SFX_tmp    SET	SFX_tmp + 10
+   3484  0cb5
+   3479  0cb5					      REPEND
+   3480  0cb5
+   3481  0cb5		       5a		      DC.B	SFX_tmp
+   3482  0cb6
+   3483  0cb6				   SFX_tmp    SET	SFX_tmp + 10
+   3484  0cb6
+   3479  0cb6					      REPEND
+   3480  0cb6
+   3481  0cb6		       64		      DC.B	SFX_tmp
+   3482  0cb7
+   3483  0cb7				   SFX_tmp    SET	SFX_tmp + 10
+   3484  0cb7
+   3479  0cb7					      REPEND
+   3480  0cb7
+   3481  0cb7		       6e		      DC.B	SFX_tmp
+   3482  0cb8
+   3483  0cb8				   SFX_tmp    SET	SFX_tmp + 10
+   3484  0cb8
+   3479  0cb8					      REPEND
+   3480  0cb8
+   3481  0cb8		       78		      DC.B	SFX_tmp
+   3482  0cb9
+   3483  0cb9				   SFX_tmp    SET	SFX_tmp + 10
+   3484  0cb9
+   3479  0cb9					      REPEND
+   3480  0cb9
+   3481  0cb9		       82		      DC.B	SFX_tmp
+   3482  0cba
+   3483  0cba				   SFX_tmp    SET	SFX_tmp + 10
+   3484  0cba
+   3479  0cba					      REPEND
+   3480  0cba
+   3481  0cba		       8c		      DC.B	SFX_tmp
+   3482  0cbb
+   3483  0cbb				   SFX_tmp    SET	SFX_tmp + 10
+   3484  0cbb
+   3479  0cbb					      REPEND
+   3480  0cbb
+   3481  0cbb		       96		      DC.B	SFX_tmp
+   3482  0cbc
+   3483  0cbc				   SFX_tmp    SET	SFX_tmp + 10
+   3484  0cbc
+   3479  0cbc					      REPEND
+   3480  0cbc
+   3481  0cbc		       a0		      DC.B	SFX_tmp
+   3482  0cbd
+   3483  0cbd				   SFX_tmp    SET	SFX_tmp + 10
+   3484  0cbd
+   3479  0cbd					      REPEND
+   3480  0cbd
+   3481  0cbd		       aa		      DC.B	SFX_tmp
+   3482  0cbe
+   3483  0cbe				   SFX_tmp    SET	SFX_tmp + 10
+   3484  0cbe
+   3479  0cbe					      REPEND
+   3480  0cbe
+   3481  0cbe		       b4		      DC.B	SFX_tmp
+   3482  0cbf
+   3483  0cbf				   SFX_tmp    SET	SFX_tmp + 10
+   3484  0cbf
+   3479  0cbf					      REPEND
+   3480  0cbf
+   3481  0cbf		       be		      DC.B	SFX_tmp
+   3482  0cc0
+   3483  0cc0				   SFX_tmp    SET	SFX_tmp + 10
+   3484  0cc0
+   3479  0cc0					      REPEND
+   3480  0cc0
+   3481  0cc0		       c8		      DC.B	SFX_tmp
+   3482  0cc1
+   3483  0cc1				   SFX_tmp    SET	SFX_tmp + 10
+   3484  0cc1
+   3479  0cc1					      REPEND
+   3480  0cc1
+   3481  0cc1		       d2		      DC.B	SFX_tmp
+   3482  0cc2
+   3483  0cc2				   SFX_tmp    SET	SFX_tmp + 10
+   3484  0cc2
+   3479  0cc2					      REPEND
+   3480  0cc2
+   3481  0cc2		       dc		      DC.B	SFX_tmp
+   3482  0cc3
+   3483  0cc3				   SFX_tmp    SET	SFX_tmp + 10
+   3484  0cc3
+   3479  0cc3					      REPEND
+   3480  0cc3
+   3481  0cc3		       e6		      DC.B	SFX_tmp
+   3482  0cc4
+   3483  0cc4				   SFX_tmp    SET	SFX_tmp + 10
+   3484  0cc4
+   3485  0cc4					      REPEND
+   3486  0cc4
+   3487  0cc4				   SFX_IndexToWorkVoiceTab
+   3488  0cc4
+   3489  0cc4		       00 0d 1a 	      HEX	00 0D 1A
+   3490  0cc7
+   3491  0cc7							; Flag set to 1 if channel 3 should be reserved
+   3492  0cc7
+   3493  0cc7		       00	   SFX_LimitVoice3 DC.B	0
+   3494  0cc8
+   3495  0cc8
+   3496  0cc8
+   3497  0cc8							; ----------------------------------
+   3498  0cc8
+   3499  0cc8							; -- INITIALIZE SID
+   3500  0cc8
+   3501  0cc8							; ----------------------------------
+   3502  0cc8
+   3503  0cc8				   .init
+   3504  0cc8
+   3505  0cc8		       a2 16		      ldx	#$16
+   3506  0cca
+   3507  0cca		       a9 00		      lda	#$00
+   3508  0ccc
+   3509  0ccc		       8d 80 0c 	      sta	SFX_CurrentVoice
+   3510  0ccf
+   3511  0ccf				   .l1
+   3512  0ccf
+   3513  0ccf		       9d 00 d4 	      sta	_SFX_SID,x
+   3514  0cd2
+   3515  0cd2		       ca		      dex
+   3516  0cd3
+   3517  0cd3		       10 fa		      bpl	.l1
+   3518  0cd5
+   3519  0cd5		       a2 26		      ldx	#(_SFX_VOICEWORKSIZE * 3) - 1
+   3520  0cd7
+   3521  0cd7				   .l2
+   3522  0cd7
+   3523  0cd7		       9d 81 0c 	      sta	SFX_VoiceControl,x
+   3524  0cda
+   3525  0cda		       ca		      dex
+   3526  0cdb
+   3527  0cdb		       10 fa		      bpl	.l2
+   3528  0cdd
+   3529  0cdd
+   3530  0cdd
+   3531  0cdd		       a9 08		      lda	#$08
+   3532  0cdf
+   3533  0cdf		       8d 04 d4 	      sta	_SFX_SIDVOICE1CONTROL
+   3534  0ce2
+   3535  0ce2		       8d 0b d4 	      sta	_SFX_SIDVOICE2CONTROL
+   3536  0ce5
+   3537  0ce5		       8d 12 d4 	      sta	_SFX_SIDVOICE3CONTROL
+   3538  0ce8
+   3539  0ce8		       a9 07		      lda	#$07
+   3540  0cea
+   3541  0cea		       8d 03 d4 	      sta	_SFX_SIDVOICE1PULSEWIDTHHI
+   3542  0ced
+   3543  0ced		       8d 0a d4 	      sta	_SFX_SIDVOICE2PULSEWIDTHHI
+   3544  0cf0
+   3545  0cf0		       8d 11 d4 	      sta	_SFX_SIDVOICE3PULSEWIDTHHI
+   3546  0cf3
+   3547  0cf3		       a9 0f		      lda	#$0f
+   3548  0cf5
+   3549  0cf5		       8d 18 d4 	      sta	_SFX_SIDVOLUMEFILTER
+   3550  0cf8
+   3551  0cf8		       a9 00		      lda	#0
+   3552  0cfa
+   3553  0cfa		       8d 17 d4 	      sta	_SFX_SIDFILTERCONTROL
+   3554  0cfd
+   3555  0cfd		       60		      rts
+   3556  0cfe
+   3557  0cfe
+   3558  0cfe
+   3559  0cfe							; Inline ASM end
+   3560  0cfe		       60		      rts
+   3561  0cff
+   3562  0cff				   _Psfx_init_end
+   3563  0cff
+   3564  0cff				   _Psfx_start SUBROUTINE
+   3565  0cff
+   3566  0cff							; Inline ASM start
+   3567  0cff
+   3568  0cff
+   3569  0cff
+   3570  0cff		       8e a0 0d 	      stx	.xTemp
+   3571  0d02
+   3572  0d02		       8c a1 0d 	      sty	.yTemp
+   3573  0d05
+   3574  0d05							; Convert the index into an offset
+   3575  0d05
+   3576  0d05		       ad a1 0e 	      lda	_sfx_start.effect_no
+   3577  0d08
+   3578  0d08		       aa		      tax
+   3579  0d09
+   3580  0d09		       bc ac 0c 	      ldy	SFX_MulBy10Tab,x
+   3581  0d0c
+   3582  0d0c							; Find a new SID voice by picking the voice with the lowest remaining SFXVoiceTotalCount
+   3583  0d0c
+   3584  0d0c		       a2 00		      ldx	#0
+   3585  0d0e
+   3586  0d0e		       ad 8d 0c 	      lda	SFX_VoiceTotalCount
+   3587  0d11
+   3588  0d11		       cd 9a 0c 	      cmp	SFX_VoiceTotalCount + _SFX_VOICEWORKSIZE
+   3589  0d14
+   3590  0d14		       90 02		      bcc	.not2
+   3591  0d16
+   3592  0d16		       a2 01		      ldx	#1
+   3593  0d18
+   3594  0d18				   .not2
+   3595  0d18
+   3596  0d18		       ad c7 0c 	      lda	SFX_LimitVoice3
+   3597  0d1b
+   3598  0d1b		       d0 0a		      bne	.not3
+   3599  0d1d
+   3600  0d1d		       ad 9a 0c 	      lda	SFX_VoiceTotalCount + _SFX_VOICEWORKSIZE
+   3601  0d20
+   3602  0d20		       cd a7 0c 	      cmp	SFX_VoiceTotalCount + [_SFX_VOICEWORKSIZE * 2]
+   3603  0d23
+   3604  0d23		       90 02		      bcc	.not3
+   3605  0d25
+   3606  0d25		       a2 02		      ldx	#2
+   3607  0d27
+   3608  0d27				   .not3
+   3609  0d27
+   3610  0d27							; Store what we have chosen
+   3611  0d27
+   3612  0d27		       8e 80 0c 	      stx	SFX_CurrentVoice
+   3613  0d2a
+   3614  0d2a
+   3615  0d2a
+   3616  0d2a							; Now retire the values by one ready for next time
+   3617  0d2a
+   3618  0d2a		       ad 8d 0c 	      lda	SFX_VoiceTotalCount
+   3619  0d2d
+   3620  0d2d		       f0 03		      beq	.no1
+   3621  0d2f
+   3622  0d2f		       ce 8d 0c 	      dec	SFX_VoiceTotalCount
+   3623  0d32
+   3624  0d32				   .no1
+   3625  0d32
+   3626  0d32		       ad 9a 0c 	      lda	SFX_VoiceTotalCount + _SFX_VOICEWORKSIZE
+   3627  0d35
+   3628  0d35		       f0 03		      beq	.no2
+   3629  0d37
+   3630  0d37		       ce 9a 0c 	      dec	SFX_VoiceTotalCount + _SFX_VOICEWORKSIZE
+   3631  0d3a
+   3632  0d3a				   .no2
+   3633  0d3a
+   3634  0d3a		       ad a7 0c 	      lda	SFX_VoiceTotalCount + [_SFX_VOICEWORKSIZE * 2]
+   3635  0d3d
+   3636  0d3d		       f0 03		      beq	.no3
+   3637  0d3f
+   3638  0d3f		       ce a7 0c 	      dec	SFX_VoiceTotalCount + [_SFX_VOICEWORKSIZE * 2]
+   3639  0d42
+   3640  0d42				   .no3
+   3641  0d42
+   3642  0d42							; Fetch the SID voice offset adjustment
+   3643  0d42
+   3644  0d42		       bd a9 0c 	      lda	SFX_MulBy7Tab,x
+   3645  0d45
+   3646  0d45		       aa		      tax
+   3647  0d46
+   3648  0d46							; Initialise the SID voice
+   3649  0d46
+   3650  0d46		       a9 00		      lda	#$00
+   3651  0d48
+   3652  0d48		       9d 05 d4 	      sta	_SFX_SIDVOICE1ATTACKDECAY,x
+   3653  0d4b
+   3654  0d4b		       9d 06 d4 	      sta	_SFX_SIDVOICE1SUSTAINRELEASE,x
+   3655  0d4e
+   3656  0d4e		       9d 04 d4 	      sta	_SFX_SIDVOICE1CONTROL,x
+   3657  0d51
+   3658  0d51							; Copy the SFX from the table to our work space for the voice
+   3659  0d51
+   3660  0d51		       ae 80 0c 	      ldx	SFX_CurrentVoice
+   3661  0d54
+   3662  0d54							; Multiply by 12, convert the index to an offset
+   3663  0d54
+   3664  0d54		       bd c4 0c 	      lda	SFX_IndexToWorkVoiceTab,x
+   3665  0d57
+   3666  0d57		       aa		      tax
+   3667  0d58
+   3668  0d58							; Copy the ten bytes of SFX table data
+   3669  0d58
+   3670  0d58		       a9 0a		      lda	#$0A
+   3671  0d5a
+   3672  0d5a		       8d a8 0c 	      sta	SFX_TempVar
+   3673  0d5d
+   3674  0d5d				   .l1
+   3675  0d5d
+   3676  0d5d				   sfx_table_inst
+   3677  0d5d
+   3678  0d5d							; Self modified
+   3679  0d5d
+   3680  0d5d		       b9 00 00 	      lda	$0000,y
+   3681  0d60
+   3682  0d60		       9d 81 0c 	      sta	SFX_VoiceControl,x
+   3683  0d63
+   3684  0d63		       e8		      inx
+   3685  0d64
+   3686  0d64		       c8		      iny
+   3687  0d65
+   3688  0d65		       ce a8 0c 	      dec	SFX_TempVar
+   3689  0d68
+   3690  0d68		       d0 f3		      bne	.l1
+   3691  0d6a
+   3692  0d6a		       a9 00		      lda	#$00
+   3693  0d6c
+   3694  0d6c							; All of these use -10 because X has just copied 10 bytes
+   3695  0d6c
+   3696  0d6c		       9d 81 0c 	      sta	SFX_VoiceFreqDirection-10,x
+   3697  0d6f
+   3698  0d6f							; Copy the initial values to higher up
+   3699  0d6f
+   3700  0d6f		       bd 7d 0c 	      lda	SFX_VoiceFreqDecay-10,x
+   3701  0d72
+   3702  0d72		       9d 82 0c 	      sta	SFX_VoiceFreqHiCount-10,x
+   3703  0d75
+   3704  0d75		       d0 09		      bne	.noMoreUpdates
+   3705  0d77
+   3706  0d77		       bd 80 0c 	      lda	SFX_VoiceFreqHiCountInit-10,x
+   3707  0d7a
+   3708  0d7a		       9d 82 0c 	      sta	SFX_VoiceFreqHiCount-10,x
+   3709  0d7d
+   3710  0d7d		       fe 81 0c 	      inc	SFX_VoiceFreqDirection-10,x
+   3711  0d80
+   3712  0d80				   .noMoreUpdates
+   3713  0d80
+   3714  0d80							; Work out roughly how long the effect will last for priority evaluation by summing the
+   3715  0d80
+   3716  0d80							; attack and decay.
+   3717  0d80
+   3718  0d80		       bd 78 0c 	      lda	SFX_VoiceAttackDecay-10,x
+   3719  0d83
+   3720  0d83		       4a		      lsr
+   3721  0d84
+   3722  0d84		       4a		      lsr
+   3723  0d85
+   3724  0d85		       4a		      lsr
+   3725  0d86
+   3726  0d86		       4a		      lsr
+   3727  0d87
+   3728  0d87		       8d a8 0c 	      sta	SFX_TempVar
+   3729  0d8a
+   3730  0d8a		       bd 78 0c 	      lda	SFX_VoiceAttackDecay-10,x
+   3731  0d8d
+   3732  0d8d		       29 0f		      and	#15
+   3733  0d8f
+   3734  0d8f		       18		      clc
+   3735  0d90
+   3736  0d90		       6d a8 0c 	      adc	SFX_TempVar
+   3737  0d93
+   3738  0d93							; Slightly longer delay, carry will always be clear here
+   3739  0d93
+   3740  0d93		       0a		      asl
+   3741  0d94
+   3742  0d94							; Always add three so that the priority picks the next one if the attack/decay is really tiny.
+   3743  0d94
+   3744  0d94		       69 03		      adc	#3
+   3745  0d96
+   3746  0d96		       9d 83 0c 	      sta	SFX_VoiceTotalCount-10,x
+   3747  0d99
+   3748  0d99		       ae a0 0d 	      ldx	.xTemp
+   3749  0d9c
+   3750  0d9c		       ac a1 0d 	      ldy	.yTemp
+   3751  0d9f
+   3752  0d9f		       60		      rts
+   3753  0da0
+   3754  0da0
+   3755  0da0
+   3756  0da0		       00	   .xTemp     DC.B	0
+   3757  0da1
+   3758  0da1		       00	   .yTemp     DC.B	0
+   3759  0da2
+   3760  0da2
+   3761  0da2
+   3762  0da2							; Inline ASM end
+   3763  0da2		       60		      rts
+   3764  0da3
+   3765  0da3				   _Psfx_start_end
+   3766  0da3
+   3767  0da3				   _Psfx_play SUBROUTINE
+   3768  0da3
+   3769  0da3							; Inline ASM start
+   3770  0da3
+   3771  0da3
+   3772  0da3
+   3773  0da3							; ----------------------------------
+   3774  0da3
+   3775  0da3							; -- THE ACTUAL PLAY ROUTINE
+   3776  0da3
+   3777  0da3							; ----------------------------------
+   3778  0da3
+   3779  0da3
+   3780  0da3
+   3781  0da3							; Update the pulse according to the toggle
+   3782  0da3
+   3783  0da3		       ad 81 0e 	      lda	.pulseToggle
+   3784  0da6
+   3785  0da6		       d0 1c		      bne	.doDecPulse
+   3786  0da8
+   3787  0da8							; Inc pulse
+   3788  0da8
+   3789  0da8		       ad 7f 0e 	      lda	.pulseWidthLo
+   3790  0dab
+   3791  0dab		       18		      clc
+   3792  0dac
+   3793  0dac		       69 50		      adc	#$50
+   3794  0dae
+   3795  0dae		       8d 7f 0e 	      sta	.pulseWidthLo
+   3796  0db1
+   3797  0db1		       90 2b		      bcc	.processVoices
+   3798  0db3
+   3799  0db3		       ee 80 0e 	      inc	.pulseWidthHi
+   3800  0db6
+   3801  0db6		       ad 80 0e 	      lda	.pulseWidthHi
+   3802  0db9
+   3803  0db9		       c9 05		      cmp	#$05
+   3804  0dbb
+   3805  0dbb		       d0 21		      bne	.processVoices
+   3806  0dbd
+   3807  0dbd		       a9 01		      lda	#$01
+   3808  0dbf
+   3809  0dbf		       8d 81 0e 	      sta	.pulseToggle
+   3810  0dc2
+   3811  0dc2		       d0 1a		      bne	.processVoices
+   3812  0dc4
+   3813  0dc4				   .doDecPulse
+   3814  0dc4
+   3815  0dc4							; Dec pulse
+   3816  0dc4
+   3817  0dc4		       ad 7f 0e 	      lda	.pulseWidthLo
+   3818  0dc7
+   3819  0dc7		       38		      sec
+   3820  0dc8
+   3821  0dc8		       e9 50		      sbc	#$50
+   3822  0dca
+   3823  0dca		       8d 7f 0e 	      sta	.pulseWidthLo
+   3824  0dcd
+   3825  0dcd		       b0 0f		      bcs	.processVoices
+   3826  0dcf
+   3827  0dcf		       ce 80 0e 	      dec	.pulseWidthHi
+   3828  0dd2
+   3829  0dd2		       ad 80 0e 	      lda	.pulseWidthHi
+   3830  0dd5
+   3831  0dd5		       c9 02		      cmp	#$02
+   3832  0dd7
+   3833  0dd7		       d0 05		      bne	.processVoices
+   3834  0dd9
+   3835  0dd9		       a9 00		      lda	#$00
+   3836  0ddb
+   3837  0ddb		       8d 81 0e 	      sta	.pulseToggle
+   3838  0dde
+   3839  0dde				   .processVoices
+   3840  0dde
+   3841  0dde		       a0 00		      ldy	#$00
+   3842  0de0
+   3843  0de0		       a2 00		      ldx	#$00
+   3844  0de2
+   3845  0de2		       20 f5 0d 	      jsr	.processOneVoice
+   3846  0de5
+   3847  0de5		       a0 07		      ldy	#$07
+   3848  0de7
+   3849  0de7		       a2 0d		      ldx	#_SFX_VOICEWORKSIZE
+   3850  0de9
+   3851  0de9		       ad c7 0c 	      lda	SFX_LimitVoice3
+   3852  0dec
+   3853  0dec		       d0 07		      bne	.skip
+   3854  0dee
+   3855  0dee		       20 f5 0d 	      jsr	.processOneVoice
+   3856  0df1
+   3857  0df1		       a0 0e		      ldy	#$0E
+   3858  0df3
+   3859  0df3		       a2 1a		      ldx	#[_SFX_VOICEWORKSIZE * 2]
+   3860  0df5
+   3861  0df5				   .skip
+   3862  0df5
+   3863  0df5				   .processOneVoice
+   3864  0df5
+   3865  0df5							; Not likely to be any frequency changes so don't run the code, just update the SID voice instead
+   3866  0df5
+   3867  0df5		       bd 87 0c 	      lda	SFX_VoiceFreqDecay,x
+   3868  0df8
+   3869  0df8		       1d 8a 0c 	      ora	SFX_VoiceFreqHiCountInit,x
+   3870  0dfb
+   3871  0dfb		       f0 5d		      beq	.noUpdates
+   3872  0dfd
+   3873  0dfd							; Process the direction
+   3874  0dfd
+   3875  0dfd		       bd 8b 0c 	      lda	SFX_VoiceFreqDirection,x
+   3876  0e00
+   3877  0e00		       d0 2d		      bne	.downWibble
+   3878  0e02
+   3879  0e02							; Incr
+   3880  0e02
+   3881  0e02		       bd 83 0c 	      lda	SFX_VoiceFreqLo,x
+   3882  0e05
+   3883  0e05		       18		      clc
+   3884  0e06
+   3885  0e06		       7d 85 0c 	      adc	SFX_VoiceFreqLoSpeed,x
+   3886  0e09
+   3887  0e09		       9d 83 0c 	      sta	SFX_VoiceFreqLo,x
+   3888  0e0c
+   3889  0e0c		       90 03		      bcc	.noCarry1
+   3890  0e0e
+   3891  0e0e		       fe 84 0c 	      inc	SFX_VoiceFreqHi,x
+   3892  0e11
+   3893  0e11				   .noCarry1
+   3894  0e11
+   3895  0e11							; Incr 2
+   3896  0e11
+   3897  0e11		       bd 84 0c 	      lda	SFX_VoiceFreqHi,x
+   3898  0e14
+   3899  0e14		       18		      clc
+   3900  0e15
+   3901  0e15		       7d 86 0c 	      adc	SFX_VoiceFreqHiSpeed2,x
+   3902  0e18
+   3903  0e18		       9d 84 0c 	      sta	SFX_VoiceFreqHi,x
+   3904  0e1b
+   3905  0e1b		       de 8c 0c 	      dec	SFX_VoiceFreqHiCount,x
+   3906  0e1e
+   3907  0e1e		       d0 3a		      bne	.noUpdates
+   3908  0e20
+   3909  0e20				   .freqProcess
+   3910  0e20
+   3911  0e20		       bd 8a 0c 	      lda	SFX_VoiceFreqHiCountInit,x
+   3912  0e23
+   3913  0e23		       9d 8c 0c 	      sta	SFX_VoiceFreqHiCount,x
+   3914  0e26
+   3915  0e26		       f0 25		      beq	.freqReset
+   3916  0e28
+   3917  0e28							; Swap the direction
+   3918  0e28
+   3919  0e28		       a9 01		      lda	#$01
+   3920  0e2a
+   3921  0e2a		       9d 8b 0c 	      sta	SFX_VoiceFreqDirection,x
+   3922  0e2d
+   3923  0e2d		       d0 2b		      bne	.noUpdates
+   3924  0e2f
+   3925  0e2f				   .downWibble
+   3926  0e2f
+   3927  0e2f							; Decr
+   3928  0e2f
+   3929  0e2f		       bd 83 0c 	      lda	SFX_VoiceFreqLo,x
+   3930  0e32
+   3931  0e32		       38		      sec
+   3932  0e33
+   3933  0e33		       fd 88 0c 	      sbc	SFX_VoiceFreqLoSpeed2,x
+   3934  0e36
+   3935  0e36		       9d 83 0c 	      sta	SFX_VoiceFreqLo,x
+   3936  0e39
+   3937  0e39		       b0 03		      bcs	.freqHiAdjust
+   3938  0e3b
+   3939  0e3b		       de 84 0c 	      dec	SFX_VoiceFreqHi,x
+   3940  0e3e
+   3941  0e3e				   .freqHiAdjust
+   3942  0e3e
+   3943  0e3e							; Decr 2
+   3944  0e3e
+   3945  0e3e		       bd 84 0c 	      lda	SFX_VoiceFreqHi,x
+   3946  0e41
+   3947  0e41		       38		      sec
+   3948  0e42
+   3949  0e42		       fd 89 0c 	      sbc	SFX_VoiceFreqHiSpeed,x
+   3950  0e45
+   3951  0e45		       9d 84 0c 	      sta	SFX_VoiceFreqHi,x
+   3952  0e48
+   3953  0e48		       de 8c 0c 	      dec	SFX_VoiceFreqHiCount,x
+   3954  0e4b
+   3955  0e4b		       d0 0d		      bne	.noUpdates
+   3956  0e4d
+   3957  0e4d				   .freqReset
+   3958  0e4d
+   3959  0e4d		       bd 87 0c 	      lda	SFX_VoiceFreqDecay,x
+   3960  0e50
+   3961  0e50		       9d 8c 0c 	      sta	SFX_VoiceFreqHiCount,x
+   3962  0e53
+   3963  0e53		       f0 cb		      beq	.freqProcess
+   3964  0e55
+   3965  0e55							; Swap the direction
+   3966  0e55
+   3967  0e55		       a9 00		      lda	#$00
+   3968  0e57
+   3969  0e57		       9d 8b 0c 	      sta	SFX_VoiceFreqDirection,x
+   3970  0e5a
+   3971  0e5a				   .noUpdates
+   3972  0e5a
+   3973  0e5a							; Update SID from our calculated data
+   3974  0e5a
+   3975  0e5a		       bd 83 0c 	      lda	SFX_VoiceFreqLo,x
+   3976  0e5d
+   3977  0e5d		       99 00 d4 	      sta	_SFX_SIDVOICE1FREQLO,y
+   3978  0e60
+   3979  0e60		       bd 84 0c 	      lda	SFX_VoiceFreqHi,x
+   3980  0e63
+   3981  0e63		       99 01 d4 	      sta	_SFX_SIDVOICE1FREQHI,y
+   3982  0e66
+   3983  0e66		       bd 82 0c 	      lda	SFX_VoiceAttackDecay,x
+   3984  0e69
+   3985  0e69		       99 05 d4 	      sta	_SFX_SIDVOICE1ATTACKDECAY,y
+   3986  0e6c
+   3987  0e6c		       bd 81 0c 	      lda	SFX_VoiceControl,x
+   3988  0e6f
+   3989  0e6f		       99 04 d4 	      sta	_SFX_SIDVOICE1CONTROL,y
+   3990  0e72
+   3991  0e72		       ad 7f 0e 	      lda	.pulseWidthLo
+   3992  0e75
+   3993  0e75		       99 02 d4 	      sta	_SFX_SIDVOICE1PULSEWIDTHLO,y
+   3994  0e78
+   3995  0e78		       ad 80 0e 	      lda	.pulseWidthHi
+   3996  0e7b
+   3997  0e7b		       99 03 d4 	      sta	_SFX_SIDVOICE1PULSEWIDTHHI,y
+   3998  0e7e
+   3999  0e7e		       60		      rts
+   4000  0e7f
+   4001  0e7f
+   4002  0e7f
+   4003  0e7f		       00	   .pulseWidthLo DC.B	0
+   4004  0e80
+   4005  0e80		       00	   .pulseWidthHi DC.B	0
+   4006  0e81
+   4007  0e81		       00	   .pulseToggle DC.B	0
+   4008  0e82
+   4009  0e82
+   4010  0e82
+   4011  0e82							; Inline ASM end
+   4012  0e82		       60		      rts
+   4013  0e83
+   4014  0e83				   _Psfx_play_end
+   4015  0e83
+   4016  0e83				   FPUSH      SET	0
+   4017  0e83				   FPULL      SET	0
+ Code        : $ade - $e82
+   4018  0e83					      ECHO	"Code	      :",prg_start,"-", *-1
+   4019  0e83				   data_start
+   4020  0e83		       50 52 45 53*_S1	      HEX	50 52 45 53 53 20 41 4E 59 20 4B 45 59 20 54 4F
+   4021  0e93		       20 50 4c 41*	      HEX	20 50 4C 41 59 20 53 46 58 00
+   4022  0e9d				   data_end
+ Data        : $e83 - $e9c
+   4023  0e9d					      ECHO	"Data	      :",data_start,"-", *-1
+   4024  0e9d							;--------------
+   4025 U0ea3 ????				      SEG.U	variables
+   4026 U0e9e					      ORG	data_end+1
+   4027 U0e9e		       00 00	   _sfx_init.addr DS.B	2
+   4028 U0ea0		       00	   _sfx_init.reserve_voice3 DS.B	1
+   4029 U0ea1		       00	   _sfx_start.effect_no DS.B	1
+   4030 U0ea2		       00	   _sound_no  DS.B	1
+ Variables*  : $e9d - $ea3
+   4031 U0ea2					      ECHO	"Variables*  :",data_end,"-", *
+ ===================
+   4032 U0ea2					      ECHO	"==================="
+ *: uninitialized segment
+   4033 U0ea2					      ECHO	"*: uninitialized segment"
