@@ -51,7 +51,7 @@ Now that SFX data is loaded, we need to set up a loop that calls the play routin
       call sfx_play
       goto loop
       
-Now the routine is running and "listening" to your commands. The only one thing left is to start a sound effect:
+Now the routine is running and "listening" to your commands. The only one thing left to do is start a sound effect:
 
     call sfx_start(sound_no!)
     
